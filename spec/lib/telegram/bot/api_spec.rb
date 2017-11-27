@@ -1,4 +1,4 @@
-RSpec.describe Telegram::Bot::Api do
+RSpec.describe TelegramRuby::Bot::Api do
   let(:token) { '180956132:AAHU0_CeyQWOd6baBc9TibTPybxY9p1P8xo' }
   let(:endpoint) { 'getMe' }
   let(:api) { described_class.new(token) }
@@ -23,7 +23,7 @@ RSpec.describe Telegram::Bot::Api do
 
       it 'raises an error' do
         expect { api_call }
-          .to raise_error(Telegram::Bot::Exceptions::ResponseError)
+          .to raise_error(TelegramRuby::Bot::Exceptions::ResponseError)
       end
     end
   end

@@ -32,11 +32,11 @@ $ gem install telegram-bot-ruby
 First things first, you need to [obtain a token](https://core.telegram.org/bots#botfather) for your bot. Then create your Telegram bot like this:
 
 ```ruby
-require 'telegram/bot'
+require 'telegram_ruby/bot'
 
 token = 'YOUR_TELEGRAM_BOT_API_TOKEN'
 
-Telegram::Bot::Client.run(token) do |bot|
+TelegramRuby::Bot::Client.run(token) do |bot|
   bot.listen do |message|
     case message.text
     when '/start'
@@ -67,12 +67,12 @@ bot.listen do |message|
     question = 'London is a capital of which country?'
     # See more: https://core.telegram.org/bots/api#replykeyboardmarkup
     answers =
-      Telegram::Bot::Types::ReplyKeyboardMarkup
+      TelegramRuby::Bot::Types::ReplyKeyboardMarkup
       .new(keyboard: [%w(A B), %w(C D)], one_time_keyboard: true)
     bot.api.send_message(chat_id: message.chat.id, text: question, reply_markup: answers)
   when '/stop'
     # See more: https://core.telegram.org/bots/api#replykeyboardremove
-    kb = Telegram::Bot::Types::ReplyKeyboardRemove.new(remove_keyboard: true)
+    kb = TelegramRuby::Bot::Types::ReplyKeyboardRemove.new(remove_keyboard: true)
     bot.api.send_message(chat_id: message.chat.id, text: 'Sorry to see you go :(', reply_markup: kb)
   end
 end
@@ -83,10 +83,10 @@ Furthermore, you can ask user to share location or phone number using `KeyboardB
 ```ruby
 bot.listen do |message|
   kb = [
-    Telegram::Bot::Types::KeyboardButton.new(text: 'Give me your phone number', request_contact: true),
-    Telegram::Bot::Types::KeyboardButton.new(text: 'Show me your location', request_location: true)
+    TelegramRuby::Bot::Types::KeyboardButton.new(text: 'Give me your phone number', request_contact: true),
+    TelegramRuby::Bot::Types::KeyboardButton.new(text: 'Show me your location', request_location: true)
   ]
-  markup = Telegram::Bot::Types::ReplyKeyboardMarkup.new(keyboard: kb)
+  markup = TelegramRuby::Bot::Types::ReplyKeyboardMarkup.new(keyboard: kb)
   bot.api.send_message(chat_id: message.chat.id, text: 'Hey!', reply_markup: markup)
 end
 ```
@@ -98,18 +98,18 @@ end
 ```ruby
 bot.listen do |message|
   case message
-  when Telegram::Bot::Types::CallbackQuery
+  when TelegramRuby::Bot::Types::CallbackQuery
     # Here you can handle your callbacks from inline buttons
     if message.data == 'touch'
       bot.api.send_message(chat_id: message.from.id, text: "Don't touch me!")
     end
-  when Telegram::Bot::Types::Message
+  when TelegramRuby::Bot::Types::Message
     kb = [
-      Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Go to Google', url: 'https://google.com'),
-      Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Touch me', callback_data: 'touch'),
-      Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Switch to inline', switch_inline_query: 'some text')
+      TelegramRuby::Bot::Types::InlineKeyboardButton.new(text: 'Go to Google', url: 'https://google.com'),
+      TelegramRuby::Bot::Types::InlineKeyboardButton.new(text: 'Touch me', callback_data: 'touch'),
+      TelegramRuby::Bot::Types::InlineKeyboardButton.new(text: 'Switch to inline', switch_inline_query: 'some text')
     ]
-    markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
+    markup = TelegramRuby::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
     bot.api.send_message(chat_id: message.chat.id, text: 'Make a choice', reply_markup: markup)
   end
 end
@@ -122,20 +122,20 @@ If you are going to create [inline bot](https://core.telegram.org/bots/inline), 
 ```ruby
 bot.listen do |message|
   case message
-  when Telegram::Bot::Types::InlineQuery
+  when TelegramRuby::Bot::Types::InlineQuery
     results = [
       [1, 'First article', 'Very interesting text goes here.'],
       [2, 'Second article', 'Another interesting text here.']
     ].map do |arr|
-      Telegram::Bot::Types::InlineQueryResultArticle.new(
+      TelegramRuby::Bot::Types::InlineQueryResultArticle.new(
         id: arr[0],
         title: arr[1],
-        input_message_content: Telegram::Bot::Types::InputTextMessageContent.new(message_text: arr[2])
+        input_message_content: TelegramRuby::Bot::Types::InputTextMessageContent.new(message_text: arr[2])
       )
     end
 
     bot.api.answer_inline_query(inline_query_id: message.id, results: results)
-  when Telegram::Bot::Types::Message
+  when TelegramRuby::Bot::Types::Message
     bot.api.send_message(chat_id: message.chat.id, text: "Hello, #{message.from.first_name}!")
   end
 end
@@ -163,7 +163,7 @@ end
 By default, bot doesn't log anything (uses `NullLoger`). You can change this behavior and provide your own logger class. See example below:
 
 ```ruby
-Telegram::Bot::Client.run(token, logger: Logger.new($stderr)) do |bot|
+TelegramRuby::Bot::Client.run(token, logger: Logger.new($stderr)) do |bot|
   bot.logger.info('Bot has been started')
   bot.listen do |message|
     # ...
@@ -178,7 +178,7 @@ Since version `0.5.0` we rely on [faraday](https://github.com/lostisland/faraday
 ```ruby
 require 'net/http/persistent'
 
-Telegram::Bot.configure do |config|
+TelegramRuby::Bot.configure do |config|
   config.adapter = :net_http_persistent
 end
 ```

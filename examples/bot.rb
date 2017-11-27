@@ -1,9 +1,9 @@
 require 'rubygems'
-require 'telegram/bot'
+require 'telegram_ruby/bot'
 
 token = 'replace-me-with-your-real-token'
 
-Telegram::Bot::Client.run(token) do |bot|
+TelegramRuby::Bot::Client.run(token) do |bot|
   bot.listen do |message|
     case message.text
     when '/start'

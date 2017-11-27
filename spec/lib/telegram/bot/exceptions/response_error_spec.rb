@@ -1,4 +1,4 @@
-RSpec.describe Telegram::Bot::Exceptions::ResponseError do
+RSpec.describe TelegramRuby::Bot::Exceptions::ResponseError do
   subject do
     begin
       described_class.new(response)
@@ -7,7 +7,7 @@ RSpec.describe Telegram::Bot::Exceptions::ResponseError do
     end
   end
 
-  let(:response) { Telegram::Bot::Api.new('123456:wrongtoken').call('getMe') }
+  let(:response) { TelegramRuby::Bot::Api.new('123456:wrongtoken').call('getMe') }
 
   it 'has error code' do
     is_expected.to respond_to(:error_code)

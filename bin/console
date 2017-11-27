@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'bundler/setup'
-require 'telegram/bot'
+require 'telegram_ruby/bot'
 
 require 'pry'
 Pry.start
